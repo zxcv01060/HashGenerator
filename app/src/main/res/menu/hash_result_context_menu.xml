@@ -3,4 +3,8 @@
     <item
         android:id="@+id/menu_item_hash_result_copy"
         android:title="複製" />
+
+    <item
+        android:id="@+id/menu_item_hash_result_share"
+        android:title="分享" />
 </menu>

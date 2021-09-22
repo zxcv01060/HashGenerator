@@ -1,5 +1,6 @@
 package tw.idv.louisli.hashgenerator.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
@@ -60,15 +61,29 @@ class HashGeneratorFragment : Fragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.menu_item_hash_result_copy) {
-            ClipboardUtils.copy(
-                context = requireContext(),
-                label = "${textAlgorithm.text}: ${textPlainText.editText?.text}",
-                content = textHashResult.text
-            )
-            true
-        } else {
-            super.onContextItemSelected(item)
+        return when (item.itemId) {
+            R.id.menu_item_hash_result_copy -> {
+                ClipboardUtils.copy(
+                    context = requireContext(),
+                    label = "${textAlgorithm.text}: ${textPlainText.editText?.text}",
+                    content = textHashResult.text
+                )
+                true
+            }
+            R.id.menu_item_hash_result_share -> {
+                val sendIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, textHashResult.text)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+                true
+            }
+            else -> {
+                super.onContextItemSelected(item)
+            }
         }
     }
 }
