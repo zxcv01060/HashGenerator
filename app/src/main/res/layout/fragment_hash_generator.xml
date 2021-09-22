@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="128dp"
     android:paddingStart="64dp"
+    android:paddingTop="128dp"
     android:paddingEnd="64dp"
     tools:context=".view.fragment.HashGeneratorFragment">
 
@@ -23,8 +23,8 @@
             android:id="@+id/text_hash_generator_algorithm_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="MD5"
-            android:inputType="none" />
+            android:inputType="none"
+            android:text="MD5" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -33,12 +33,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="明文">
+        android:hint="明文"
+        app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            tools:text="hello world" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

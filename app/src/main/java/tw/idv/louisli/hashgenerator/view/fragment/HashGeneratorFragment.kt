@@ -37,6 +37,10 @@ class HashGeneratorFragment : Fragment() {
             )
         )
         textPlainText = view.findViewById(R.id.text_hash_generator_plain_text)
+        textPlainText.setEndIconOnClickListener {
+            textPlainText.editText?.text?.clear()
+            textHashResult.text = ""
+        }
         textHashResult = view.findViewById(R.id.text_hash_generator_hash_result)
         val buttonSubmit = view.findViewById<Button>(R.id.button_hash_generator_submit)
         buttonSubmit.setOnClickListener {
