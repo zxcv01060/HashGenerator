@@ -15,6 +15,7 @@ import tw.idv.louisli.hashgenerator.util.ClipboardUtils
 class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragment() {
     private lateinit var textAlgorithm: AutoCompleteTextView
     private lateinit var textPlainText: TextInputLayout
+    private lateinit var textSalt: TextInputLayout
     private lateinit var textHashResult: TextView
 
     override fun onCreateView(
@@ -44,13 +45,18 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
             textHashResult.text = ""
         }
 
+        textSalt = view.findViewById(R.id.text_hash_generator_salt)
+
         textHashResult = view.findViewById(R.id.text_hash_generator_hash_result)
         registerForContextMenu(textHashResult)
 
         view.findViewById<View>(R.id.button_hash_generator_submit)
             .setOnClickListener {
                 val algorithm = HashAlgorithmFactory.create(textAlgorithm.text.toString())
-                textHashResult.text = algorithm.hash(textPlainText.editText?.text.toString())
+                textHashResult.text = algorithm.hash(
+                    textPlainText.editText?.text.toString(),
+                    textSalt.editText?.text.toString()
+                )
             }
     }
 
@@ -82,7 +88,8 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
     private fun copyHashResultToClipboard() {
         ClipboardUtils.copy(
             context = requireContext(),
-            label = "${textAlgorithm.text}: ${textPlainText.editText?.text}",
+            label = "${textAlgorithm.text}: " +
+                    "${textPlainText.editText?.text}(Salt: ${textSalt.editText?.text})",
             content = textHashResult.text
         )
     }
