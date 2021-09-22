@@ -7,8 +7,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import tw.idv.louisli.hashgenerator.view.fragment.HashGeneratorFragment
 import tw.idv.louisli.hashgenerator.view.fragment.HashHistoryFragment
 
-class MainViewPagerAdapter(private val activity: FragmentActivity) :
+class MainViewPagerAdapter(activity: FragmentActivity) :
     FragmentStateAdapter(activity) {
+    private val intent = activity.intent
+
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment = when (position) {
@@ -18,6 +20,10 @@ class MainViewPagerAdapter(private val activity: FragmentActivity) :
     }
 
     private fun getSharedPlainText(): String? {
-        return activity.intent?.getStringExtra(Intent.EXTRA_TEXT)
+        return if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
+            intent.getStringExtra(Intent.EXTRA_TEXT)
+        } else {
+            null
+        }
     }
 }
