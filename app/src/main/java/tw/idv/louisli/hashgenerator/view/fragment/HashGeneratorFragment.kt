@@ -13,7 +13,7 @@ import tw.idv.louisli.hashgenerator.R
 import tw.idv.louisli.hashgenerator.algorithm.HashAlgorithmFactory
 import tw.idv.louisli.hashgenerator.util.ClipboardUtils
 
-class HashGeneratorFragment : Fragment() {
+class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragment() {
     private lateinit var textAlgorithm: AutoCompleteTextView
     private lateinit var textPlainText: TextInputLayout
     private lateinit var textHashResult: TextView
@@ -38,6 +38,7 @@ class HashGeneratorFragment : Fragment() {
             )
         )
         textPlainText = view.findViewById(R.id.text_hash_generator_plain_text)
+        textPlainText.editText?.setText(sharedPlainText)
         textPlainText.setEndIconOnClickListener {
             textPlainText.editText?.text?.clear()
             textHashResult.text = ""
