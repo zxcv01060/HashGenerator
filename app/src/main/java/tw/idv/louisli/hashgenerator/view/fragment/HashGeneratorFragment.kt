@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
@@ -37,19 +36,22 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
                 resources.getStringArray(R.array.support_hash_algorithm)
             )
         )
+
         textPlainText = view.findViewById(R.id.text_hash_generator_plain_text)
         textPlainText.editText?.setText(sharedPlainText)
         textPlainText.setEndIconOnClickListener {
             textPlainText.editText?.text?.clear()
             textHashResult.text = ""
         }
+
         textHashResult = view.findViewById(R.id.text_hash_generator_hash_result)
-        val buttonSubmit = view.findViewById<Button>(R.id.button_hash_generator_submit)
-        buttonSubmit.setOnClickListener {
-            val algorithm = HashAlgorithmFactory.create(textAlgorithm.text.toString())
-            textHashResult.text = algorithm.hash(textPlainText.editText?.text.toString())
-        }
         registerForContextMenu(textHashResult)
+
+        view.findViewById<View>(R.id.button_hash_generator_submit)
+            .setOnClickListener {
+                val algorithm = HashAlgorithmFactory.create(textAlgorithm.text.toString())
+                textHashResult.text = algorithm.hash(textPlainText.editText?.text.toString())
+            }
     }
 
     override fun onCreateContextMenu(
@@ -64,27 +66,35 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_item_hash_result_copy -> {
-                ClipboardUtils.copy(
-                    context = requireContext(),
-                    label = "${textAlgorithm.text}: ${textPlainText.editText?.text}",
-                    content = textHashResult.text
-                )
+                copyHashResultToClipboard()
                 true
             }
             R.id.menu_item_hash_result_share -> {
-                val sendIntent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, textHashResult.text)
-                    type = "text/plain"
-                }
-
-                val shareIntent = Intent.createChooser(sendIntent, null)
-                startActivity(shareIntent)
+                shareHashResultToOtherApp()
                 true
             }
             else -> {
                 super.onContextItemSelected(item)
             }
         }
+    }
+
+    private fun copyHashResultToClipboard() {
+        ClipboardUtils.copy(
+            context = requireContext(),
+            label = "${textAlgorithm.text}: ${textPlainText.editText?.text}",
+            content = textHashResult.text
+        )
+    }
+
+    private fun shareHashResultToOtherApp() {
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, textHashResult.text)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 }
