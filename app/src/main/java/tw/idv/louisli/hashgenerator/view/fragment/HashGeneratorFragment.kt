@@ -28,12 +28,7 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.plainText.value = sharedPlainText ?: ""
-        binding.textHashGeneratorPlainText.setEndIconOnClickListener {
-            viewModel.clearPlainTextAndHashResult()
-        }
-
         registerForContextMenu(binding.textHashGeneratorHashResult)
     }
 
