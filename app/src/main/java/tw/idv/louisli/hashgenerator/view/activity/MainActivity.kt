@@ -1,8 +1,9 @@
-package tw.idv.louisli.hashgenerator
+package tw.idv.louisli.hashgenerator.view.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import tw.idv.louisli.hashgenerator.R
 import tw.idv.louisli.hashgenerator.util.BottomNavigationViewMediator
 import tw.idv.louisli.hashgenerator.view.adapter.MainViewPagerAdapter
 
