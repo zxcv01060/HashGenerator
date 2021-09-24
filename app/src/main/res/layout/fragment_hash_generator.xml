@@ -1,75 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingStart="64dp"
-    android:paddingTop="128dp"
-    android:paddingEnd="64dp"
-    tools:context=".view.fragment.HashGeneratorFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_hash_generator_algorithm"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="演算法"
-        android:labelFor="@id/text_hash_generator_algorithm_content"
-        app:startIconDrawable="@drawable/ic_baseline_lock_24">
+    <data>
 
-        <AutoCompleteTextView
-            android:id="@+id/text_hash_generator_algorithm_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="none"
-            android:text="MD5" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <variable
+            name="viewModel"
+            type="tw.idv.louisli.hashgenerator.view.viewmodel.HashGeneratorViewModel" />
+    </data>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_hash_generator_plain_text"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="明文"
-        app:endIconMode="clear_text">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            tools:text="hello world" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_hash_generator_salt"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Salt"
-        app:endIconMode="clear_text">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/button_hash_generator_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="產生結果" />
-
-    <TextView
-        android:id="@+id/text_hash_generator_hash_result"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        tools:text="5eb63bbbe01eeed093cb22bb8f5acdc3" />
-</LinearLayout>
+        android:orientation="vertical"
+        android:paddingStart="64dp"
+        android:paddingTop="128dp"
+        android:paddingEnd="64dp"
+        tools:context=".view.fragment.HashGeneratorFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_hash_generator_algorithm"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="演算法"
+            android:labelFor="@id/text_hash_generator_algorithm_content"
+            app:startIconDrawable="@drawable/ic_baseline_lock_24">
+
+            <AutoCompleteTextView
+                android:id="@+id/text_hash_generator_algorithm_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:text="@={viewModel.algorithm}"
+                app:items="@{@stringArray/support_hash_algorithm}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_hash_generator_plain_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="明文"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:text="@={viewModel.plainText}"
+                tools:text="hello world" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_hash_generator_salt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Salt"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.salt}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button_hash_generator_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="產生結果"
+            android:onClick="@{() -> viewModel.generate()}" />
+
+        <TextView
+            android:id="@+id/text_hash_generator_hash_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@{viewModel.hashResult}"
+            tools:text="5eb63bbbe01eeed093cb22bb8f5acdc3" />
+    </LinearLayout>
+</layout>

@@ -3,61 +3,38 @@ package tw.idv.louisli.hashgenerator.view.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.google.android.material.textfield.TextInputLayout
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import tw.idv.louisli.hashgenerator.R
-import tw.idv.louisli.hashgenerator.algorithm.HashAlgorithmFactory
+import tw.idv.louisli.hashgenerator.databinding.FragmentHashGeneratorBinding
 import tw.idv.louisli.hashgenerator.util.ClipboardUtils
+import tw.idv.louisli.hashgenerator.view.viewmodel.HashGeneratorViewModel
 
 class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragment() {
-    private lateinit var textAlgorithm: AutoCompleteTextView
-    private lateinit var textPlainText: TextInputLayout
-    private lateinit var textSalt: TextInputLayout
-    private lateinit var textHashResult: TextView
+    private lateinit var binding: FragmentHashGeneratorBinding
+    private val viewModel: HashGeneratorViewModel by lazy { ViewModelProvider(this).get() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_hash_generator, container, false)
+    ): View {
+        binding = FragmentHashGeneratorBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        textAlgorithm = view.findViewById(R.id.text_hash_generator_algorithm_content)
-        textAlgorithm.setAdapter(
-            ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                resources.getStringArray(R.array.support_hash_algorithm)
-            )
-        )
-
-        textPlainText = view.findViewById(R.id.text_hash_generator_plain_text)
-        textPlainText.editText?.setText(sharedPlainText)
-        textPlainText.setEndIconOnClickListener {
-            textPlainText.editText?.text?.clear()
-            textHashResult.text = ""
+        viewModel.plainText.value = sharedPlainText ?: ""
+        binding.textHashGeneratorPlainText.setEndIconOnClickListener {
+            viewModel.clearPlainTextAndHashResult()
         }
 
-        textSalt = view.findViewById(R.id.text_hash_generator_salt)
-
-        textHashResult = view.findViewById(R.id.text_hash_generator_hash_result)
-        registerForContextMenu(textHashResult)
-
-        view.findViewById<View>(R.id.button_hash_generator_submit)
-            .setOnClickListener {
-                val algorithm = HashAlgorithmFactory.create(textAlgorithm.text.toString())
-                textHashResult.text = algorithm.hash(
-                    textPlainText.editText?.text.toString(),
-                    textSalt.editText?.text.toString()
-                )
-            }
+        registerForContextMenu(binding.textHashGeneratorHashResult)
     }
 
     override fun onCreateContextMenu(
@@ -88,16 +65,16 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
     private fun copyHashResultToClipboard() {
         ClipboardUtils.copy(
             context = requireContext(),
-            label = "${textAlgorithm.text}: " +
-                    "${textPlainText.editText?.text}(Salt: ${textSalt.editText?.text})",
-            content = textHashResult.text
+            label = "${viewModel.algorithm.value}: ${viewModel.plainText.value}" +
+                    "(Salt: ${viewModel.salt.value})",
+            content = viewModel.hashResult.value
         )
     }
 
     private fun shareHashResultToOtherApp() {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, textHashResult.text)
+            putExtra(Intent.EXTRA_TEXT, viewModel.hashResult.value)
             type = "text/plain"
         }
 
