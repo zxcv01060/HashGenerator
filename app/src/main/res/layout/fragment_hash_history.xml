@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.graphics.Color" />
+
         <variable
             name="viewModel"
             type="tw.idv.louisli.hashgenerator.view.viewmodel.HashHistoryViewModel" />
@@ -32,6 +34,7 @@
             app:layoutManager="@{layoutManager}"
             app:viewHolderFactory="@{viewHolderFactory}"
             app:items="@{viewModel.itemList}"
-            app:itemViewLongClickable="@{true}" />
+            app:itemViewLongClickable="@{true}"
+            app:enableDivider="@{true}" />
     </LinearLayout>
 </layout>
