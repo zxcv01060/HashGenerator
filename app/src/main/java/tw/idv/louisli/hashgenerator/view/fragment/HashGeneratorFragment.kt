@@ -38,6 +38,10 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
         v: View,
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
+        if (viewModel.hashResult.value.isBlank()) {
+            return
+        }
+
         val activity = requireActivity()
         activity.menuInflater.inflate(R.menu.hash_result_context_menu, menu)
     }
