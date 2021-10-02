@@ -19,6 +19,7 @@ object BottomNavigationViewMediator {
                 when (it.itemId) {
                     R.id.menu_item_main_hash_generator -> 0
                     R.id.menu_item_main_hash_history -> 1
+                    R.id.menu_item_main_hash_decode -> 2
                     else -> throw IllegalStateException("此底部導覽列項目沒有對應的Position")
                 },
                 true
