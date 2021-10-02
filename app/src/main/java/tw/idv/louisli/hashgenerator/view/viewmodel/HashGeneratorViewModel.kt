@@ -26,15 +26,15 @@ class HashGeneratorViewModel : ViewModel() {
         val hashAlgorithm = HashAlgorithmFactory.create(algorithm.value)
         hashResult.value = hashAlgorithm.hash(plainText.value, salt.value)
         viewModelScope.launch {
-            historyDAO.save(
-                HashHistory(
-                    algorithm = algorithm.value,
-                    plainText = plainText.value,
-                    salt = salt.value,
-                    result = hashResult.value,
-                    createDate = Date()
-                )
-            )
+            historyDAO.save(createHistory())
         }
     }
+
+    fun createHistory() = HashHistory(
+        algorithm = algorithm.value,
+        plainText = plainText.value,
+        salt = salt.value,
+        result = hashResult.value,
+        createDate = Date()
+    )
 }
