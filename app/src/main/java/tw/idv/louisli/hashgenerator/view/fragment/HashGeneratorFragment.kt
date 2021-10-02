@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import tw.idv.louisli.hashgenerator.R
+import tw.idv.louisli.hashgenerator.data.HashHistory
 import tw.idv.louisli.hashgenerator.databinding.FragmentHashGeneratorBinding
 import tw.idv.louisli.hashgenerator.util.ClipboardUtils
 import tw.idv.louisli.hashgenerator.view.viewmodel.HashGeneratorViewModel
@@ -58,12 +59,7 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
     }
 
     private fun copyHashResultToClipboard() {
-        ClipboardUtils.copy(
-            context = requireContext(),
-            label = "${viewModel.algorithm.value}: ${viewModel.plainText.value}" +
-                    "(Salt: ${viewModel.salt.value})",
-            content = viewModel.hashResult.value
-        )
+        ClipboardUtils.copy(requireContext(), viewModel.createHistory())
     }
 
     private fun shareHashResultToOtherApp() {
@@ -75,5 +71,9 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
 
         val shareIntent = Intent.createChooser(sendIntent, null)
         startActivity(shareIntent)
+    }
+
+    fun restoreHistory(history: HashHistory) {
+        viewModel.restoreHistory(history)
     }
 }

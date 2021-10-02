@@ -6,16 +6,19 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import tw.idv.louisli.hashgenerator.view.fragment.HashGeneratorFragment
 import tw.idv.louisli.hashgenerator.view.fragment.HashHistoryFragment
+import tw.idv.louisli.hashgenerator.view.fragment.OpenHashGeneratorCallback
 
-class MainViewPagerAdapter(activity: FragmentActivity) :
-    FragmentStateAdapter(activity) {
+class MainViewPagerAdapter(
+    activity: FragmentActivity,
+    private val openHashGeneratorCallback: OpenHashGeneratorCallback
+) : FragmentStateAdapter(activity) {
     private val intent = activity.intent
 
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment = when (position) {
         0 -> HashGeneratorFragment(getSharedPlainText())
-        1 -> HashHistoryFragment()
+        1 -> HashHistoryFragment(openHashGeneratorCallback)
         else -> throw IllegalArgumentException("找不到對應的Fragment：$position")
     }
 

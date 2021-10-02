@@ -37,4 +37,11 @@ class HashGeneratorViewModel : ViewModel() {
         result = hashResult.value,
         createDate = Date()
     )
+
+    fun restoreHistory(history: HashHistory) {
+        algorithm.value = history.algorithm
+        plainText.value = history.plainText
+        salt.value = history.salt
+        hashResult.value = ""
+    }
 }
