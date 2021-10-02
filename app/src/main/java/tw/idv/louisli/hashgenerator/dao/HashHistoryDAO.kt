@@ -13,4 +13,7 @@ interface HashHistoryDAO {
 
     @Query("SELECT * FROM HashHistory ORDER BY id DESC")
     fun searchAll(): Flow<List<HashHistory>>
+
+    @Query("SELECT plainText FROM HashHistory WHERE (:algorithm IS NULL OR algorithm = :algorithm) AND result = :result LIMIT 0, 1")
+    suspend fun getFirstByAlgorithmAndResult(algorithm: String?, result: String): String?
 }
