@@ -6,8 +6,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import tw.idv.louisli.hashgenerator.R
 
 object BottomNavigationViewMediator {
-    fun mediate(viewPager: ViewPager2, bottomNavigationView: BottomNavigationView) {
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+    fun ViewPager2.mediate(bottomNavigationView: BottomNavigationView) {
+        registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 bottomNavigationView.menu[position].isChecked = true
@@ -15,7 +15,7 @@ object BottomNavigationViewMediator {
         })
 
         bottomNavigationView.setOnItemSelectedListener {
-            viewPager.setCurrentItem(
+            setCurrentItem(
                 when (it.itemId) {
                     R.id.menu_item_main_hash_generator -> 0
                     R.id.menu_item_main_hash_history -> 1

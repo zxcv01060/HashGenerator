@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import tw.idv.louisli.hashgenerator.R
-import tw.idv.louisli.hashgenerator.util.BottomNavigationViewMediator
+import tw.idv.louisli.hashgenerator.util.BottomNavigationViewMediator.mediate
 import tw.idv.louisli.hashgenerator.view.adapter.MainViewPagerAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +14,6 @@ class MainActivity : AppCompatActivity() {
 
         val pager = findViewById<ViewPager2>(R.id.pager_main)
         pager.adapter = MainViewPagerAdapter(this)
-        BottomNavigationViewMediator.mediate(pager, findViewById(R.id.bottom_navigation_main))
+        pager.mediate(findViewById(R.id.bottom_navigation_main))
     }
 }
