@@ -24,12 +24,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <tw.idv.louisli.hashgenerator.view.ContextMenuRecyclerView
+            android:id="@+id/recycler_hash_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             app:layoutManager="@{layoutManager}"
             app:viewHolderFactory="@{viewHolderFactory}"
-            app:items="@{viewModel.itemList}" />
+            app:items="@{viewModel.itemList}"
+            app:itemViewLongClickable="@{true}" />
     </LinearLayout>
 </layout>

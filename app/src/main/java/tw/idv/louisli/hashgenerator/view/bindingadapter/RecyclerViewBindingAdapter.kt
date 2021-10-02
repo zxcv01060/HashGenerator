@@ -15,3 +15,13 @@ fun setLayoutManager(view: RecyclerView, layoutManager: RecyclerView.LayoutManag
 fun setItem(view: RecyclerView, items: List<AdapterItem>, viewHolderFactory: ViewHolderFactory<*>) {
     view.adapter = DataBindingRecyclerViewAdapter(items, viewHolderFactory)
 }
+
+@BindingAdapter("items", "viewHolderFactory", "itemViewLongClickable")
+fun setItem(
+    view: RecyclerView,
+    items: List<AdapterItem>,
+    viewHolderFactory: ViewHolderFactory<*>,
+    itemViewLongClickable: Boolean
+) {
+    view.adapter = DataBindingRecyclerViewAdapter(items, viewHolderFactory, itemViewLongClickable)
+}

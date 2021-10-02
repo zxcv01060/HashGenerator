@@ -9,7 +9,8 @@ import tw.idv.louisli.hashgenerator.view.adapter.viewholder.ViewHolderFactory
 
 class DataBindingRecyclerViewAdapter(
     items: List<AdapterItem>,
-    private val viewHolderFactory: ViewHolderFactory<AdapterViewHolder<*>>
+    private val viewHolderFactory: ViewHolderFactory<AdapterViewHolder<*>>,
+    private val isItemViewLongClickable: Boolean = false
 ) : RecyclerView.Adapter<RecyclerViewViewHolderImpl>() {
     private val _items = items.toMutableList()
     val items: List<AdapterItem>
@@ -31,6 +32,7 @@ class DataBindingRecyclerViewAdapter(
         val viewHolder = viewHolderFactory.create(viewType)
         val itemView = viewHolder.inflateView(inflater, parent)
         viewHolder.bindView(itemView)
+        itemView.isLongClickable = isItemViewLongClickable
         return RecyclerViewViewHolderImpl(viewHolder as AdapterViewHolder<AdapterItem>, itemView)
     }
 
