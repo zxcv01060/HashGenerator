@@ -3,6 +3,7 @@ package tw.idv.louisli.hashgenerator.util
 import androidx.core.view.get
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import tw.idv.louisli.hashgenerator.R
 
 object BottomNavigationViewMediator {
     fun mediate(viewPager: ViewPager2, bottomNavigationView: BottomNavigationView) {
@@ -14,7 +15,14 @@ object BottomNavigationViewMediator {
         })
 
         bottomNavigationView.setOnItemSelectedListener {
-            viewPager.setCurrentItem(it.order, true)
+            viewPager.setCurrentItem(
+                when (it.itemId) {
+                    R.id.menu_item_main_hash_generator -> 0
+                    R.id.menu_item_main_hash_history -> 1
+                    else -> throw IllegalStateException("此底部導覽列項目沒有對應的Position")
+                },
+                true
+            )
             true
         }
     }
