@@ -12,7 +12,7 @@ import tw.idv.louisli.hashgenerator.databinding.FragmentHashGeneratorBinding
 import tw.idv.louisli.hashgenerator.util.ClipboardUtils
 import tw.idv.louisli.hashgenerator.view.viewmodel.HashGeneratorViewModel
 
-class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragment() {
+class HashGeneratorFragment(private val plainText: String?) : Fragment(), ShortcutFragment {
     private lateinit var binding: FragmentHashGeneratorBinding
     private val viewModel: HashGeneratorViewModel by lazy { ViewModelProvider(this).get() }
 
@@ -23,13 +23,15 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
     ): View {
         binding = FragmentHashGeneratorBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
+        binding.viewModel = viewModel.apply {
+            plainText.value = this@HashGeneratorFragment.plainText ?: ""
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.plainText.value = sharedPlainText ?: ""
+
         registerForContextMenu(binding.textHashGeneratorHashResult)
     }
 
@@ -56,9 +58,7 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
                 shareHashResultToOtherApp()
                 true
             }
-            else -> {
-                super.onContextItemSelected(item)
-            }
+            else -> super.onContextItemSelected(item)
         }
     }
 
@@ -79,5 +79,9 @@ class HashGeneratorFragment(private val sharedPlainText: String? = null) : Fragm
 
     fun restoreHistory(history: HashHistory) {
         viewModel.restoreHistory(history)
+    }
+
+    override fun onShortcutClick(sharedText: String) {
+        viewModel.plainText.value = sharedText
     }
 }
