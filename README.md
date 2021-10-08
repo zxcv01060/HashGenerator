@@ -16,3 +16,14 @@
     * Android Jetpack Room 2.3.0
     * Android Jetpack Lifecycle-ViewModel 2.3.1
     * Android DataBinding
+
+## 專案執行
+
+啟動前需在根目錄建立`api_key.properties`檔案，裡面要有以下變數
+
+```properties
+api.email="API_EMAIL"
+api.code="API_CODE"
+```
+
+以上兩個變數的值需到此[第三方API](https://md5decrypt.net/en/Api/)取得
