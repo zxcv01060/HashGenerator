@@ -27,3 +27,7 @@ api.code="API_CODE"
 ```
 
 以上兩個變數的值需到此[第三方API](https://md5decrypt.net/en/Api/)取得
+
+## APK
+
+[v1.0.0](hash-generator-1.0.0.apk)
