@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hash Generator</string>
+    <string name="app_name">加密工具</string>
     <string-array name="support_hash_algorithm">
         <item>MD5</item>
         <item>SHA-1</item>
